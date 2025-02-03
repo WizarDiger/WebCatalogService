@@ -65,7 +65,7 @@ namespace WebCatalogService.Server.Repositories
                 conn.Close();
             }
         }
-        public void DeleteClient(Guid clientId, Guid productId)
+        public void DeleteFromCart(Guid clientId, Guid productId)
         {
             string query = $@"DELETE FROM ""Cart"" WHERE ""ClientId""=@clientId AND ""ProductId""=@productId";
             DataTable table = new DataTable();

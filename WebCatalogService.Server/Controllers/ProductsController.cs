@@ -39,9 +39,9 @@ namespace WebCatalogService.Server.Controllers
             return new JsonResult("Информация о товаре успешно обновлена");
         }
         [HttpDelete]
-        public JsonResult DeleteProduct(Guid id)
+        public JsonResult DeleteProduct(string code)
         {
-            productsService.DeleteProduct(id);
+            productsService.DeleteProduct(code);
             return new JsonResult("Продукт успешно удалён");
         }
     }

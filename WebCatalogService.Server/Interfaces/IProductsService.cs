@@ -8,6 +8,6 @@ namespace WebCatalogService.Server.Interfaces
         JsonResult GetProducts();
         void AddProduct(Product product);
         void UpdateProduct(Product product);
-        void DeleteProduct(Guid id);
+        void DeleteProduct(string code);
     }
 }

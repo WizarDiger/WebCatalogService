@@ -1,6 +1,8 @@
-﻿namespace WebCatalogService.Server.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace WebCatalogService.Server.Models
 {
-    public class User
+    public class User:IdentityUser
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

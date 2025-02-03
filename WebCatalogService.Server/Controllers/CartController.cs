@@ -30,7 +30,7 @@ namespace WebCatalogService.Server.Controllers
         [HttpDelete]
         public JsonResult DeleteFromCart(Guid clientId, Guid productId)
         {
-            cartService.DeteleFromCart(clientId,productId);
+            cartService.DeleteFromCart(clientId,productId);
             return new JsonResult("Товар успешно удалён из корзины");
         }
     }

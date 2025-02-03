@@ -7,6 +7,6 @@ namespace WebCatalogService.Server.Interfaces
     {
         JsonResult GetCart(Guid clientId);
         void AddToCart(Guid clientId, Product product, int quantity);
-        void DeteleFromCart (Guid clientId, Guid productId);
+        void DeleteFromCart (Guid clientId, Guid productId);
     }
 }

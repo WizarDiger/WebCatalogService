@@ -88,9 +88,9 @@ namespace WebCatalogService.Server.Repositories
                 conn.Close();
             }
         }
-        public void DeleteProduct(Guid id)
+        public void DeleteProduct(string code)
         {
-            string query = $@"DELETE FROM ""Products"" WHERE ""Id""=@id";
+            string query = $@"DELETE FROM ""Products"" WHERE ""Code""=@code";
             DataTable table = new DataTable();
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -100,7 +100,7 @@ namespace WebCatalogService.Server.Repositories
                     Parameters =
 
                     {
-                        new("@id",id),
+                        new("@code",code),
 
                     }
                 };

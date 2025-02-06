@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using WebCatalogService.Server.Interfaces;
@@ -12,11 +13,13 @@ namespace WebCatalogService.Server.Controllers
     {
         private IUsersService usersService;
         private IClientsService clientsService;
+        private UserManager<User> userManager;
 
-        public UsersController(IUsersService usersService, IClientsService clientsService)
+        public UsersController(IUsersService usersService, IClientsService clientsService, UserManager<User> userManager)
         {
             this.usersService = usersService;
             this.clientsService = clientsService;
+            this.userManager = userManager;
         }
         [HttpGet]
         public JsonResult GetUsers()
@@ -24,37 +27,24 @@ namespace WebCatalogService.Server.Controllers
             return usersService.GetUsers();
         }
         [HttpPost]
-        public JsonResult AddUser(string name, string role, string code, string address, int discount)
+        public JsonResult AddUser(User user)
         {
-            if (role == "Заказчик")
-            {
-                var guid = Guid.NewGuid();
-                var user = new User() { Id = guid, Name = name, ClientId = guid, Role = role};
-                usersService.AddUser(user);
-                var client = new Client() { Id = guid, Name = name, Code = code, Address = address, Discount = discount };
-                clientsService.AddClient(client);
-            }
-            if (role == "Менеджер")
-            {
-                var user = new User() { Id = Guid.NewGuid(), Name = name, Role = role };
-                usersService.AddUser(user);
-            }
+
+            userManager.CreateAsync(user);
+            userManager.AddToRoleAsync(user, "Заказчик");
+
             return new JsonResult("Пользователь успешно создан");
         }
         [HttpPut]
-        public JsonResult UpdateUser(Guid id, string name, string role, string code, string address, int discount)
+        public JsonResult UpdateUser(User user)
         {
-            var user = new User() { Id = id, Name = name, ClientId = id, Role = role };
-            usersService.UpdateUser(user);
-            var client = new Client() { Id = id, Name = name, Code = code, Address = address, Discount = discount };
-            clientsService.UpdateClient(client);
+            userManager.UpdateAsync(user);
             return new JsonResult("Информация о пользователе успешно обновлена");
         }
         [HttpDelete]
-        public JsonResult DeleteUser(Guid id)
+        public JsonResult DeleteUser(User user)
         {
-            usersService.DeleteUser(id);
-            clientsService.DeleteClient(id);
+            userManager.DeleteAsync(user);
             return new JsonResult("Пользователь успешно удалён");
         }
     }

@@ -3,7 +3,7 @@
   import { ref } from 'vue'
 
   const searchQuery = ref('')
-  const gridColumns = ['Name', 'Code', 'Address','Discount']
+  const gridColumns = ['Code', 'Name', 'Price', 'Category']
   const user = [];
 
 </script>
@@ -35,7 +35,7 @@
   <div>
 
     <h1>
-      Пользователи
+      Товары
     </h1>
     <form id="search">
       Search <input name="query" v-model="searchQuery">
@@ -58,15 +58,18 @@
     methods: {
       handleAddProduct() {
         this.$router.push('/AddProductPage')
-      },
-        handleAddUser() {
-        this.$router.push('/AddUserPage')
       }
     },
     mounted() {
-      fetch('http://localhost:5049/api/Clients')
+      fetch('http://localhost:5049/api/Products')
         .then(res => res.json())
         .then(data => this.gridData = data)
+        .then(gridColumns => this.gridColumns = data[0])
+        .catch(err => console.log(err.message))
+
+      fetch('http://localhost:5049/api/Users')
+        .then(res => res.json())
+        .then(data => this.user = data)
         .catch(err => console.log(err.message))
     }
   }

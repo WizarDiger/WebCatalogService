@@ -25,23 +25,21 @@ namespace WebCatalogService.Server.Controllers
             return productsService.GetProducts();
         }
         [HttpPost]
-        public JsonResult AddProduct(string code, string name, int price, string category)
-        {
-            var product = new Product() { Id = Guid.NewGuid(), Code = code, Name = name, Price = price, Category = category };
+        public JsonResult AddProduct(Product product)
+        { 
             productsService.AddProduct(product);
             return new JsonResult("Товар успешно добавлен");
         }
         [HttpPut]
-        public JsonResult UpdateProduct(Guid id, string code, string name, int price, string category)
+        public JsonResult UpdateProduct(Product product)
         {
-            var product = new Product() { Id = id, Code = code, Name = name, Price = price, Category = category };
             productsService.UpdateProduct(product);
             return new JsonResult("Информация о товаре успешно обновлена");
         }
         [HttpDelete]
-        public JsonResult DeleteProduct(string code)
+        public JsonResult DeleteProduct(Product product)
         {
-            productsService.DeleteProduct(code);
+            productsService.DeleteProduct(product);
             return new JsonResult("Продукт успешно удалён");
         }
     }

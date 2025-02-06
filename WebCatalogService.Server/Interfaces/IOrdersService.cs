@@ -8,6 +8,6 @@ namespace WebCatalogService.Server.Interfaces
         JsonResult GetOrders();
         void AddOrder(Order order);
         void UpdateOrder(Order order);
-        void DeleteOrder(Guid id);
+        void DeleteOrder(Order order);
     }
 }

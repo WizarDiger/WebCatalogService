@@ -88,7 +88,7 @@ namespace WebCatalogService.Server.Repositories
                 conn.Close();
             }
         }
-        public void DeleteOrder(Guid id)
+        public void DeleteOrder(Order order)
         {
             string query = $@"DELETE FROM ""Order"" WHERE ""Id""=@id";
             DataTable table = new DataTable();
@@ -100,7 +100,7 @@ namespace WebCatalogService.Server.Repositories
                     Parameters =
 
                     {
-                        new("@id",id),
+                        new("@id",order.Id),
                     }
                 };
                 var reader = command.ExecuteReader();

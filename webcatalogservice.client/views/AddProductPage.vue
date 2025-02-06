@@ -1,12 +1,4 @@
-<script setup>
-  import Grid from '../src/components/Grid.vue'
-  import { ref } from 'vue'
 
-  const searchQuery = ref('')
-  const gridColumns = ['Name', 'Code', 'Address','Discount']
-  const user = [];
-
-</script>
 <template>
   <div :style="{ position:'fixed',left:'0', top:'0',width:'100%', 'border-style':'solid', 'border-color':'dodgerblue', height:'20%'}">
     <div id="nav" :style="{position:'fixed', top:'5%', left:'1%'}">
@@ -33,41 +25,76 @@
     </div>
   </div>
   <div>
-
     <h1>
-      Пользователи
+      Товары
     </h1>
-    <form id="search">
-      Search <input name="query" v-model="searchQuery">
-    </form>
-    <Grid :data="gridData"
-          :columns="gridColumns"
-          :filter-key="searchQuery">
-    </Grid>
+    <p>Код</p>
+    <input v-text-field v-model="code" placeholder="код" />
+    <p>Наименование</p>
+    <input v-text-field v-model="name" placeholder="наименование" />
+    <p>Цена</p>
+    <input v-text-field v-model="price" placeholder="цена" />
+    <p>Категория</p>
+    <input v-text-field v-model="category" placeholder="категория" />
+    <div>
+      .
+    </div>
+    <div>
+      <v-btn class="green" @click="handleSubmit">Добавить товар</v-btn>
+    </div>
   </div>
+
 </template>
 <script>
-
   export default {
+    name: 'AddProductPage',
     data() {
       return {
-        gridData: []
+        code: 'XX-XXXX-YYXX',
+        name: '',
+        price: 0,
+        category: ''
       }
     },
-    name: 'ProductsPage',
     methods: {
-      handleAddProduct() {
-        this.$router.push('/AddProductPage')
-      },
-        handleAddUser() {
-        this.$router.push('/AddUserPage')
+      handleSubmit() {
+
+        fetch('http://localhost:5049/api/Products', {
+
+          method: 'POST',
+          credentials: 'include',
+          headers:
+          {
+            'Access-Control-Allow-Origin': 'https://localhost:49470',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(
+            {
+              Code: this.code,
+              Name: this.name,
+              Price: this.price,
+              Category: this.category,
+            }
+          )
+        })
+          .then(res => res.json())
+          .then((result) => {
+            if (result === 'Товар успешно добавлен') {
+              this.$router.push('/ProductsPage')
+
+            }
+            else {
+
+              var errormessage = "Неверные параметры товара";
+              alert(errormessage);
+            }
+          },
+            (error) => {
+              alert(error);
+            })
+
       }
-    },
-    mounted() {
-      fetch('http://localhost:5049/api/Clients')
-        .then(res => res.json())
-        .then(data => this.gridData = data)
-        .catch(err => console.log(err.message))
     }
   }
 </script>

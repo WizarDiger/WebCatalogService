@@ -8,6 +8,6 @@ namespace WebCatalogService.Server.Interfaces
         JsonResult GetClients();
         void AddClient(Client client);
         void UpdateClient(Client client);
-        void DeleteClient(Guid id);
+        void DeleteClient(Client client);
     }
 }

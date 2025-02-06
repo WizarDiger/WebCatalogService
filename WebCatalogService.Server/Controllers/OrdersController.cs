@@ -20,30 +20,29 @@ namespace WebCatalogService.Server.Controllers
             return ordersService.GetOrders();
         }
         [HttpPost]
-        public JsonResult AddOrder(Guid customerId, DateTime shipmentDate)
+        public JsonResult AddOrder(Order order)
         {
             var rnd = new Random();
-            var order = new Order() { Id = Guid.NewGuid(),CustomerId = customerId, OrderDate=DateTime.Now,ShipmentDate = shipmentDate, OrderNumber = rnd.Next(0,100000),Status = "Новый" };
+            var myOrder = new Order() { Id = Guid.NewGuid(),CustomerId = order.CustomerId, OrderDate=DateTime.Now,ShipmentDate = order.ShipmentDate, OrderNumber = rnd.Next(0,100000),Status = "Новый" };
             ordersService.AddOrder(order);
             return new JsonResult("Заказ успешно сформирован");
         }
         [HttpPut]
-        public JsonResult UpdateOrder(Guid id, Guid customerId, DateTime orderDate, DateTime shipmentDate, int orderNumber, string status)
+        public JsonResult UpdateOrder(Order order)
         {
-            var order = new Order() { Id = id, CustomerId = customerId, OrderDate = orderDate, ShipmentDate = shipmentDate, OrderNumber = orderNumber, Status = status };
             ordersService.UpdateOrder(order);
             return new JsonResult("Информация о заказе успешно обновлена");
         }
         [HttpDelete]
-        public JsonResult DeleteOrder(Guid id, string status)
+        public JsonResult DeleteOrder(Order order)
         {
-            if (status == "Новый")
+            if (order.Status == "Новый")
             {
 
-                ordersService.DeleteOrder(id);
+                ordersService.DeleteOrder(order);
                 return new JsonResult("Заказ был успешно удалён");
             }
-            if (status == "Выполняется" || status == "Выполнен")
+            if (order.Status == "Выполняется" || order.Status == "Выполнен")
             {
                 return new JsonResult("Невозможно удалить заказ, который уже выполняется или выполнен");
             }

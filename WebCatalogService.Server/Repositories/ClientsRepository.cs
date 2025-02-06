@@ -86,7 +86,7 @@ namespace WebCatalogService.Server.Repositories
                 conn.Close();
             }
         }
-        public void DeleteClient(Guid id)
+        public void DeleteClient(Client client)
         {
             string query = $@"DELETE FROM ""Clients"" WHERE ""Id""=@id";
             DataTable table = new DataTable();
@@ -98,7 +98,7 @@ namespace WebCatalogService.Server.Repositories
                     Parameters =
 
                     {
-                        new("@id",id),
+                        new("@id",client.Id),
 
                     }
                 };
